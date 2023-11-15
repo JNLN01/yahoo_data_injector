@@ -6,25 +6,14 @@ def download(ticker, start_date, end_date):
     df = yf.download(ticker, start=start_date, end=end_date)
     return df
 #                Asset   ,Start Date  , End Date
-df1 = download("EURUSD=X", "2003-12-1", "2023-03-06",)
+df1 = download("AZN.L", "2018-01-01", "2023-01-01",)
 df1 = df1.loc[:, ["Open", "Close"]]  # Sets out only Open and close prices in the dataset.
-weekly_df1 = df1.resample("W").agg({'Open': 'first', 'Close': 'last'})
-weekly_df1.head() #Above, filters data to weekly. Sunday open to Friday close.
+weekly_df1 = df1.resample("D").agg({'Open': 'first', 'Close': 'last'})
+weekly_df1.head() #Above, filters data to weekly (W). Sunday open to Friday close.
 print(weekly_df1.head) #prints the dataframe for x instrument for y date range
 
 #To be worked on; Rework options for the dataframe + manipulation options of said dataframe.
 
-#User option to save the dataframe.
+#Saves the dataframe as .csv
+df1.to_csv('yahoo_DF.csv', sep=',', index=False, encoding='utf-8')
 
-save = input("Do you want to save? ")
-save = save.lower()   #forces user response to be lowercase.
-
-if save == 'yes':
-    df1.to_csv('yahoo_dataframe.csv')
-    print("Dataframe saved as yahoo_dataframe.csv")
-
-elif save == 'no':
-   print("Not saved as CSV")
-
-else:
-    print('Incorrect Input. Try a yes or no')
